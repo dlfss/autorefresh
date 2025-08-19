@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Auto Refresh até hora</title>
+  <title>Abrir site 1 segundo antes</title>
   <style>
     body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
     input, button { padding: 10px; margin: 5px; font-size: 16px; }
@@ -10,7 +10,7 @@
   </style>
 </head>
 <body>
-  <h2>⏰ AutoRefresh até hora</h2>
+  <h2>⏰ Abrir site 1 segundo antes</h2>
   <p>Escolhe a data/hora e o site:</p>
 
   <input type="datetime-local" id="horaAlvo">
@@ -33,31 +33,19 @@
       }
 
       const horaAlvo = new Date(horaAlvoStr);
-      const horaInicio = new Date(horaAlvo.getTime() - 5*60*1000); // 5 min antes
+      const horaInicio = new Date(horaAlvo.getTime() - 1000); // 1 segundo antes
 
       document.getElementById("status").innerText =
-        `Vai abrir ${url} às ${horaInicio.toLocaleTimeString()} e atualizar até ${horaAlvo.toLocaleTimeString()}`;
+        `Vai abrir ${url} às ${horaInicio.toLocaleTimeString()}`;
 
       timer = setInterval(() => {
         const agora = new Date();
 
-        // 5 min antes -> abre site
-        if (agora >= horaInicio && agora < horaAlvo) {
-          window.location.href = url; // vai para o site
+        if (agora >= horaInicio) {
           clearInterval(timer);
-
-          // começa a dar refresh no site até hora alvo
-          const refreshTimer = setInterval(() => {
-            const agora2 = new Date();
-            if (agora2 < horaAlvo) {
-              location.reload();
-            } else {
-              clearInterval(refreshTimer);
-              alert("✅ Hora atingida, refresh terminou!");
-            }
-          }, 3000); // refresh a cada 3 segundos
+          window.location.href = url; // abre o site
         }
-      }, 1000);
+      }, 200); // verifica a cada 200ms
     }
   </script>
 </body>
